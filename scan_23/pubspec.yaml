@@ -24,6 +24,8 @@ dependencies:
   logger: ^2.5.0
   pretty_dio_logger: ^1.4.0
   shared_preferences: ^2.3.3
+  flutter_doc_scanner: ^0.0.12
+  path_provider: ^2.0.15
 
 dev_dependencies:
   flutter_test:

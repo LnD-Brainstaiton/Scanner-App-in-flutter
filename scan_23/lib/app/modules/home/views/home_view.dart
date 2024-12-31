@@ -18,12 +18,6 @@ class HomeView extends BaseView<HomeController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Obx(() {
-              return controller.scannedDocuments.value != null
-                  ? Text(controller.scannedDocuments.value.toString())
-                  : const Text("No Documents Scanned");
-            }),
-            SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 controller.scanDocument();

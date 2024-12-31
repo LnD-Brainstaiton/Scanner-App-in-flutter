@@ -1,81 +1,44 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '/app/core/base/base_controller.dart';
-import '../../../core/base/paging_controller.dart';
-import '../../../core/model/github_search_query_param.dart';
-import '../../../data/model/github_project_search_response.dart';
-import '../../../data/repository/github_repository.dart';
-import '../model/github_project_ui_data.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class HomeController extends BaseController {
-  final GithubRepository _repository =
-      Get.find(tag: (GithubRepository).toString());
+  final ImagePicker _picker = ImagePicker();
+  final pdf = pw.Document();
 
-  final RxList<GithubProjectUiData> _githubProjectListController =
-      RxList.empty();
+  Future<void> scanDocument() async {
+    try {
+      // Step 1: Capture Image
+      final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+      if (image == null) return;
 
-  List<GithubProjectUiData> get projectList =>
-      _githubProjectListController.toList();
+      // Step 2: Add Image to PDF
+      final imageFile = File(image.path);
+      final imageBytes = imageFile.readAsBytesSync();
+      final pdfImage = pw.MemoryImage(imageBytes);
 
-  final pagingController = PagingController<GithubProjectUiData>();
+      pdf.addPage(pw.Page(build: (pw.Context context) {
+        return pw.Center(child: pw.Image(pdfImage));
+      }));
 
-  void getGithubGetxProjectList() {
-    if (!pagingController.canLoadNextPage()) return;
+      // Step 3: Save PDF to Temporary Directory
+      final outputDir = await getApplicationDocumentsDirectory();
+      final pdfFile = File('${outputDir.path}/scanned_document.pdf');
+      await pdfFile.writeAsBytes(await pdf.save());
 
-    pagingController.isLoadingPage = true;
-
-    var queryParam = GithubSearchQueryParam(
-      searchKeyWord: 'flutter getx template',
-      pageNumber: pagingController.pageNumber,
-    );
-
-    var githubRepoSearchService = _repository.searchProject(queryParam);
-
-    callDataService(
-      githubRepoSearchService,
-      onSuccess: _handleProjectListResponseSuccess,
-    );
-
-    pagingController.isLoadingPage = false;
-  }
-
-  onRefreshPage() {
-    pagingController.initRefresh();
-    getGithubGetxProjectList();
-  }
-
-  onLoadNextPage() {
-    logger.i("On load next");
-
-    getGithubGetxProjectList();
-  }
-
-  void _handleProjectListResponseSuccess(GithubProjectSearchResponse response) {
-    List<GithubProjectUiData>? repoList = response.items
-        ?.map((e) => GithubProjectUiData(
-              repositoryName: e.name != null ? e.name! : "Null",
-              ownerLoginName: e.owner != null ? e.owner!.login! : "Null",
-              ownerAvatar: e.owner != null ? e.owner!.avatarUrl! : "",
-              numberOfStar: e.stargazersCount ?? 0,
-              numberOfFork: e.forks ?? 0,
-              score: e.score ?? 0.0,
-              watchers: e.watchers ?? 0,
-              description: e.description ?? "",
-            ))
-        .toList();
-
-    if (_isLastPage(repoList!.length, response.totalCount!)) {
-      pagingController.appendLastPage(repoList);
-    } else {
-      pagingController.appendPage(repoList);
+    //   // Step 4: Save PDF to Gallery
+    //   await GallerySaver.saveFile(pdfFile.path);
+    //   Get.snackbar('Success', 'PDF saved to gallery!');
+    } catch (e) {
+      Get.snackbar('Error', 'An error occurred: $e');
     }
-
-    var newList = [...pagingController.listItems];
-
-    _githubProjectListController(newList);
   }
 
-  bool _isLastPage(int newListItemCount, int totalCount) {
-    return (projectList.length + newListItemCount) >= totalCount;
-  }
 }

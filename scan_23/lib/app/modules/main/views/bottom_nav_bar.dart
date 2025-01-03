@@ -21,7 +21,7 @@ class BottomNavBar extends StatelessWidget with BaseWidgetMixin {
   final navController = BottomNavController();
   final Key bottomNavKey = GlobalKey();
   final Color selectedItemColor = Colors.white;
-  final Color unselectedItemColor = Colors.grey;
+  final Color unselectedItemColor = Colors.white;
 
   @override
   Widget body(BuildContext context) {

@@ -14,12 +14,6 @@ const errorTextStyle = TextStyle(
   color: AppColors.errorColor,
 );
 
-const greyDarkTextStyle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w400,
-    color: AppColors.textColorGreyDark,
-    height: 1.45);
-
 const primaryColorSubtitleStyle = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
@@ -94,7 +88,7 @@ const appBarSubtitleStyle = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
     height: 1.25,
-    color: AppColors.colorWhite);
+    color: AppColors.textColorPrimary);
 
 const cardTitleStyle = TextStyle(
     fontSize: 20,
@@ -108,12 +102,6 @@ const cardTitleCyanStyle = TextStyle(
   color: AppColors.colorPrimary,
 );
 
-const cardSubtitleStyle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    height: 1.2,
-    color: AppColors.textColorGreyLight);
-
 const titleStyle = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.w500,
@@ -125,10 +113,8 @@ const settingsItemStyle = TextStyle(
   fontWeight: FontWeight.w400,
 );
 
-final cardTagStyle = titleStyle.copyWith(color: AppColors.textColorGreyDark);
-
 const titleStyleWhite = TextStyle(
-    fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.colorWhite);
+    fontSize: 18, fontWeight: FontWeight.w500, color: AppColors.textColorPrimary);
 
 const inputFieldLabelStyle = TextStyle(
   fontSize: 18,
@@ -136,12 +122,6 @@ const inputFieldLabelStyle = TextStyle(
   height: 1.34,
   color: AppColors.textColorPrimary,
 );
-
-const cardSmallTagStyle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    height: 1.2,
-    color: AppColors.textColorGreyDark);
 
 const pageTitleStyle = TextStyle(
     fontSize: 18,
@@ -162,7 +142,7 @@ const pageTitleWhiteStyle = TextStyle(
     fontSize: 28,
     fontWeight: FontWeight.w600,
     height: 1.15,
-    color: AppColors.colorWhite);
+    color: AppColors.textColorPrimary);
 
 const extraBigTitleStyle = TextStyle(
   fontSize: 40,
